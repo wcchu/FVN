@@ -3,14 +3,17 @@ rm(list = ls())
 library(dplyr)
 require(MASS)
 
+data_raw <- Cars93
+
 ## Take 4 representitive numerical variables to predict the price
 data <-
-  Cars93 %>%
+  data_raw %>%
   dplyr::select(
     MPG.city,
     Horsepower,
     Length,
     Passengers,
+    Weight,
     Price
   )
 
@@ -28,13 +31,20 @@ dque <-
 
 source("dnn.R")
 
+m <- ncol(dref)
 p <-
   dNN(
-    x = dref[, c(1, 2, 3, 4)],
-    y = dref[, 5],
-    q = dque[, c(1, 2, 3, 4)],
-    v = 0.3,
-    min.pts = 3,
+    x = dref[, -m],
+    y = dref[, m],
+    q = dque[, -m],
+    v = 0.2,
+    min.pts = 1,
     min.frac = 0.2
   )
-  
+
+dpred <- data.frame(dque, p)
+dpred$percentage_error <-
+  round(abs(dpred$prediction - dpred$Price) / dpred$Price * 100, 2)
+
+write.csv(dref, "ref.csv")
+write.csv(dque, "que.csv")
