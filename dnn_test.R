@@ -34,7 +34,7 @@ p <-
     y = dref[, 5],
     q = dque[, c(1, 2, 3, 4)],
     v = 0.3,
-    min.pop = 3,
+    min.pts = 3,
     min.frac = 0.2
   )
   

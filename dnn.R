@@ -6,12 +6,12 @@ library(data.table)
 #   q = predictor variables of the query dataset
 #   v = normalized volumn of the neighborhood in the variable space;
 #       normalized volumn = (normalized radius) ^ {number of variables}
-#   min.pop = minimum total population in the neighborhood
+#   min.pts = minimum number of data points in the neighborhood
 #   min.frac = minimum proportion of the most popular class out of the total
 #              population to quarantee that class as the prediction
 #              (only used when response is categorical)
 # Output: predicted response vector
-dNN <- function(x, y, q, v, min.pop = 1, min.frac = 0) {
+dNN <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
   # * process training data to create "reference data" for NN alg
   res_type <- ifelse(is.numeric(y), 'numeric', 'class')
   res_data_type <- ifelse(is.numeric(y), 'numeric', 'character')
@@ -40,7 +40,7 @@ dNN <- function(x, y, q, v, min.pop = 1, min.frac = 0) {
       ref %>%
       dplyr::filter(dist <= v ** (1 / nvar))
     n = nrow(dball)
-    if (n < min.pop) {
+    if (n < min.pts) {
       prediction[i] <- NA
       comment[i] <- "insufficient data points"
     } else {
