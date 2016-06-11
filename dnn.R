@@ -4,14 +4,14 @@ library(data.table)
 #   x = predictor variables of the reference dataset
 #   y = response of the reference dataset
 #   q = predictor variables of the query dataset
-#   d = normalized "effective radius" of the neighborhood in the variable space;
-#       actual radius = sqrt(num_of_variables * d ^ 2)
+#   v = normalized volumn of the neighborhood in the variable space;
+#       normalized volumn = (normalized radius) ^ {number of variables}
 #   min.pop = minimum total population in the neighborhood
 #   min.frac = minimum proportion of the most popular class out of the total
 #              population to quarantee that class as the prediction
 #              (only used when response is categorical)
 # Output: predicted response vector
-dNN <- function(x, y, q, d, min.pop = 1, min.frac = 0) {
+dNN <- function(x, y, q, v, min.pop = 1, min.frac = 0) {
   # * process training data to create "reference data" for NN alg
   res_type <- ifelse(is.numeric(y), 'numeric', 'class')
   res_data_type <- ifelse(is.numeric(y), 'numeric', 'character')
@@ -38,7 +38,7 @@ dNN <- function(x, y, q, d, min.pop = 1, min.frac = 0) {
     # collect data points in ball
     dball <-
       ref %>%
-      dplyr::filter(dist <= sqrt(nvar * d * d))
+      dplyr::filter(dist <= v ** (1 / nvar))
     n = nrow(dball)
     if (n < min.pop) {
       prediction[i] <- NA
