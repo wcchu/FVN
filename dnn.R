@@ -4,8 +4,8 @@ library(data.table)
 #   x = predictor variables of the reference dataset
 #   y = response of the reference dataset
 #   q = predictor variables of the query dataset
-#   v = normalized volumn of the neighborhood in the variable space;
-#       normalized volumn = (normalized radius) ^ {number of variables}
+#   v = normalized volume of the neighborhood in the variable space;
+#       normalized volume = (normalized radius) ^ {number of variables}
 #   min.pts = minimum number of data points in the neighborhood
 #   min.frac = minimum proportion of the most popular class out of the total
 #              population to quarantee that class as the prediction
