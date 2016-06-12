@@ -42,7 +42,7 @@ dNN <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
     n = nrow(dball)
     if (n < min.pts) {
       prediction[i] <- NA
-      comment[i] <- "insufficient data points"
+      comment[i] <- "insufficient points"
     } else {
       # do statistics in ball
       if (res_type == 'class') {
@@ -55,14 +55,20 @@ dNN <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
           data.frame()
         if (nrow(sball) == 0) {
           prediction[i] <- NA
-          comment[i] <- "fraction of best class too low"
+          comment[i] <- "frac of best class too low"
         } else {
           prediction[i] <- sball$dnn.response[1]
-          comment[i] <- "categorical response predicted"
+          comment[i] <- paste(
+            "class frac",
+            as.character(signif(sball$frac[1], 3))
+          )
         }
       } else if (res_type == 'numeric') {
-        prediction[i] <- mean(dball$dnn.response, na.rm = T)
-        comment[i] <- "numeric response predicted"
+        prediction[i] <- signif(mean(dball$dnn.response, na.rm = T), 3)
+        comment[i] <- paste(
+          "std is", 
+          as.character(signif(sd(dball$dnn.response, na.rm = T), 3))
+        )
       }
     }
     n_neighbors[i] <- n
