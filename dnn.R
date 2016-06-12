@@ -45,7 +45,7 @@ dNN <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
     n = nrow(dball)
     if (n < min.pts) {
       prediction[i] <- NA
-      comment[i] <- "insufficient points"
+      comment[i] <- "insuff. points"
     } else {
       # do statistics in ball
       if (res_type == 'class') {
