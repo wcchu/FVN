@@ -10,13 +10,13 @@ The 2nd parameter is the minimum number of data points in the neighborhood for a
 The 3rd parameter is used in categorical prediction only. It's the minimum fraction of the most popular class in the neighborhood where we can take this class as the predicted response.
 
 ## What's the test data
-In the following I show a case using the dNN algorithm. First some libraries and the Cars93 data are imported. the dataset is saved in "data".
+In the following I show a case using the dNN algorithm. First some libraries and the Cars93 data are imported. The dNN function is created in "dnn.R". The Cars93 dataset is saved in "data".
 ```{r}
 rm(list = ls())
-library(dplyr)
-library(data.table)
-require(MASS)
-source("dnn.R")
+suppressMessages(library(dplyr))
+suppressMessages(library(data.table))
+suppressMessages(require(MASS))
+suppressMessages(source("dnn.R"))
 data <- Cars93
 ```
 There are 93 objects and 27 variables. Each object is a car, and each variable is a measure of the car, which contains horsepower, size, number of passengers, MPG, price, etc. I will like to take a few numerical variables as predictors and the price of the car as the response. Before defining the exact predictors, I first separate the dataset into the reference dataset and the query dataset. We use the reference data points to predict the response of the query data points. Here I random sample 2/3 objects as reference data points and the rest as query data points.
