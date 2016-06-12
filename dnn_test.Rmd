@@ -54,6 +54,7 @@ dpred <-
   data.frame(dque, p) %>%
   dplyr::mutate(percentage_error = signif(abs(prediction - Price) / Price * 100, 3))
 ex1 <- dpred
+print(head(ex1))
 ```
 
 ### Example 2: use horsepower, number of passengers, and MPG (in the city) to predict the price
@@ -74,6 +75,7 @@ dpred <-
   data.frame(dque, p) %>%
   dplyr::mutate(percentage_error = signif(abs(prediction - Price) / Price * 100, 3))
 ex2 <- dpred
+print(head(ex2))
 ```
 
 ### Example 3: user horsepower, number of passengers, MPG (in the city), and wheelbase to predict the price
@@ -94,6 +96,7 @@ dpred <-
   data.frame(dque, p) %>%
   dplyr::mutate(percentage_error = signif(abs(prediction - Price) / Price * 100, 3))
 ex3 <- dpred
+print(head(ex3))
 ```
 
 ### Put 3 examples side by side
@@ -114,6 +117,7 @@ compare <-
     nn3 = ex3$n_neighbors,
     err3 = ex3$percentage_error
   )
+print(head(compare))
 ```
 
 This file is to demonstrate how to use dNN, but not to analyze the Cars93 data. Next, I will demonstrate using dNN on classification (coming soon).
