@@ -33,7 +33,7 @@ que <-
   dplyr::select(-samp)
 ```
 
-## Choosing the predictor variables
+## Run dNN with 2 to 4 predictor variables
 There are 3 examples in the following, with 2, 3, and 4 predictor variables. Each time when there's a new predictor (which I think is the next important representitive feature of a car), the prediction changes somehow.
 
 ### Example 1: use horsepower and number of passengers to predict the price
@@ -52,7 +52,7 @@ p <-
   )
 dpred <-
   data.frame(dque, p) %>%
-  dplyr::mutate(percentage_error = signif(abs(prediction - Price) / Price * 100, 3))
+  dplyr::mutate(perc_error = signif(abs(prediction - Price) / Price * 100, 3))
 ex1 <- dpred
 print(head(ex1))
 ```
@@ -73,7 +73,7 @@ p <-
   )
 dpred <-
   data.frame(dque, p) %>%
-  dplyr::mutate(percentage_error = signif(abs(prediction - Price) / Price * 100, 3))
+  dplyr::mutate(perc_error = signif(abs(prediction - Price) / Price * 100, 3))
 ex2 <- dpred
 print(head(ex2))
 ```
@@ -94,7 +94,7 @@ p <-
   )
 dpred <-
   data.frame(dque, p) %>%
-  dplyr::mutate(percentage_error = signif(abs(prediction - Price) / Price * 100, 3))
+  dplyr::mutate(perc_error = signif(abs(prediction - Price) / Price * 100, 3))
 ex3 <- dpred
 print(head(ex3))
 ```
@@ -107,15 +107,15 @@ compare <-
     pred1 = ex1$prediction,
     comm1 = ex1$comment,
     nn1 = ex1$n_neighbors,
-    err1 = ex1$percentage_error,
+    err1 = ex1$perc_error,
     pred2 = ex2$prediction,
     comm2 = ex2$comment,
     nn2 = ex2$n_neighbors,
-    err2 = ex2$percentage_error,
+    err2 = ex2$perc_error,
     pred3 = ex3$prediction,
     comm3 = ex3$comment,
     nn3 = ex3$n_neighbors,
-    err3 = ex3$percentage_error
+    err3 = ex3$perc_error
   )
 print(head(compare))
 ```
