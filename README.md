@@ -1,7 +1,7 @@
 # dNN
 Distance-based Nearest neighbors algorithm
 
-* Similarly to kNN, predictor variable are numeric and response is either numeric or categorical
+* Similar to kNN, predictor variable are numeric and response is either numeric or categorical
 * Distance is calculated in normalized variable space
 * Variable space is normalized to the standard deviation of the distribution of each variable
 * User specifies the volume of the hyper-dimensional "neighborhood ball", which thus defines the radius of the ball by (normalized volume) = (normalized radius) ^ (number of variables)
