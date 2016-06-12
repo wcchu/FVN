@@ -1,3 +1,6 @@
+# Distance-based nearest neighbors algorithm
+# Wei-Chun Chu
+# 2016-06-12
 library(dplyr)
 library(data.table)
 # Input:
