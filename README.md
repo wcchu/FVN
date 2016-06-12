@@ -1,5 +1,6 @@
 # dNN
-Nearest neighbors algorithm with fixed neighborhood radius instead of number of neighbors
+Distance-based Nearest neighbors algorithm
 
-Note that the variable space is normalized to the standard deviation of each variable, and the user defines the "normalized volume" which converts to normalized radius, defined by
-normalized_volume = normalized_radius ^ {number_of_variables}.
+* Distance is calculated in normalized variable space
+* User specifies the volume of the hyper-dimensional "neighborhood ball", thus fixing the radius of the ball: (normalized volume) = (normalized radius) ^ (number of variables)
+* Variable space is normalized to the standard deviation of the distribution of each variable
