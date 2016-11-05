@@ -1,4 +1,4 @@
-# Test of distance-based nearest neighbors algorithm
+# Test of dNN algorithm
 
 ## Motivation of dNN
 The idea behind dNN is similar to the idea of kNN--to predict the behavior of someone by looking at what his or her neighbors do, and assume his or her behavior is the average of these neighbors. Instead of looking at a fixed number of nearest neighbors like what kNN does, dNN looks at all the neighbors within a fixed distance from the person we want to predict. While kNN always yields a prediction in the variable space no matter where, dNN does not give a prediction if that someone we try to predict has no neighbor within the distance that we specify. This is usually a disadvantage but sometimes can be viewed as an advantage if we don't really trust a prediction based on far-away neighbors.
