@@ -1,5 +1,5 @@
 # dNN
-Distance-based Nearest neighbors algorithm
+Nearest neighbors in fixed-size neighborhood algorithm
 
 * Similar to kNN, predictor variable are numeric and response is either numeric (regression) or categorical (classification)
 * Distance is calculated in normalized variable space
