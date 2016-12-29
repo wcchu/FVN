@@ -1,5 +1,5 @@
-dnn_test.html: dnn_test.Rmd dnn.R
-	Rscript dnn_test_markdown.R && rm dnn_test.md
+fvn_test.html: fvn_test.Rmd fvn.R
+	Rscript create_markdowns.R && rm fvn_test.md
 
 clean:
-	rm dnn_test.html
+	rm fvn_test.html
