@@ -1,22 +1,22 @@
-# Test of dNN algorithm
+# Test of FVN algorithm
 
-## Motivation of dNN
-The idea behind dNN is similar to the idea of kNN--to predict the behavior of someone by looking at what his or her neighbors do, and assume his or her behavior is the average of these neighbors. Instead of looking at a fixed number of nearest neighbors like what kNN does, dNN looks at all the neighbors within a fixed distance from the person we want to predict. While kNN always yields a prediction in the variable space no matter where, dNN does not give a prediction if that someone we try to predict has no neighbor within the distance that we specify. This is usually a disadvantage but sometimes can be viewed as an advantage if we don't really trust a prediction based on far-away neighbors.
+## Motivation of FVN
+The idea behind FVN is similar to the idea of kNN--to predict the behavior of someone by looking at what his or her neighbors do, and assume his or her behavior is the average of these neighbors. Instead of looking at a fixed number of nearest neighbors like what kNN does, FVN looks at all the neighbors within a fixed distance from the person we want to predict. While kNN always yields a prediction in the variable space no matter where, FVN does not give a prediction if that someone we try to predict has no neighbor within the distance that we specify. This is usually a disadvantage but sometimes can be viewed as an advantage if we don't really trust a prediction based on far-away neighbors.
 
-## User parameters of dNN
+## User parameters of FVN
 As said in the README file, the distance in the variable space that we care about is the normalized distance. It means that the distribution of the reference data points in each dimension is normalized so that its standard deviation equals 1, then the distance is calculated.
 The first parameter needed is the size of the neighborhood within which the data points are official neighbors. Instead of specifying directly the normalized radius of the hyper-dimensional neighborhood ball, we specify the "normalized volume". In other words, the user defines the volume of the neighborhood in comparison to the volume of the whole reference data distribution in the variable space.
 The 2nd parameter is the minimum number of data points in the neighborhood for a reasonable prediction.
 The 3rd parameter is used in categorical prediction only. It's the minimum fraction of the most popular class in the neighborhood where we can take this class as the predicted response.
 
 ## What's the test data
-In the following I show a case using the dNN algorithm. First some libraries and the Cars93 data are imported. The dNN function is created in "dnn.R". The Cars93 dataset is saved in "data".
+In the following I show a case using the FVN algorithm. First some libraries and the Cars93 data are imported. The FVN function is created in "FVN.R". The Cars93 dataset is saved in "data".
 ```{r}
 rm(list = ls())
 suppressMessages(library(dplyr))
 suppressMessages(library(data.table))
 suppressMessages(require(MASS))
-suppressMessages(source("dnn.R"))
+suppressMessages(source("fvn.R"))
 data <- Cars93
 ```
 There are 93 objects and 27 variables. Each object is a car, and each variable is a measure of the car, which contains horsepower, size, number of passengers, MPG, price, etc. I will like to take a few numerical variables as predictors and the price of the car as the response. Before defining the exact predictors, I first separate the dataset into the reference dataset and the query dataset. We use the reference data points to predict the response of the query data points. Here I random sample 2/3 objects as reference data points and the rest as query data points.
@@ -33,7 +33,7 @@ que <-
   dplyr::select(-samp)
 ```
 
-## Run dNN with 2 to 4 predictor variables
+## Run FVN with 2 to 4 predictor variables
 There are 3 examples in the following, with 2, 3, and 4 predictor variables. Each time when there's a new predictor (which I think is the next important representitive feature of a car), the prediction changes somehow.
 
 ### Example 1: use horsepower and number of passengers to predict the price
@@ -42,7 +42,7 @@ dref <- ref %>% dplyr::select(Horsepower, Passengers, Price)
 dque <- que %>% dplyr::select(Horsepower, Passengers, Price)
 m <- ncol(dref)
 p <-
-  dNN(
+  fvn(
     x = dref[, -m],
     y = dref[, m],
     q = dque[, -m],
@@ -63,7 +63,7 @@ dref <- ref %>% dplyr::select(Horsepower, Passengers, MPG.city, Price)
 dque <- que %>% dplyr::select(Horsepower, Passengers, MPG.city, Price)
 m <- ncol(dref)
 p <-
-  dNN(
+  fvn(
     x = dref[, -m],
     y = dref[, m],
     q = dque[, -m],
@@ -84,7 +84,7 @@ dref <- ref %>% dplyr::select(Horsepower, Passengers, MPG.city, Wheelbase, Price
 dque <- que %>% dplyr::select(Horsepower, Passengers, MPG.city, Wheelbase, Price)
 m <- ncol(dref)
 p <-
-  dNN(
+  fvn(
     x = dref[, -m],
     y = dref[, m],
     q = dque[, -m],
@@ -120,4 +120,4 @@ compare <-
 print(head(compare))
 ```
 
-This file is to demonstrate how to use dNN, but not to analyze the Cars93 data. Next, I will demonstrate using dNN on classification (coming soon).
+This file is to demonstrate how to use FVN, but not to analyze the Cars93 data. Next, I will demonstrate using FVN on classification (coming soon).
