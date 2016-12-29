@@ -14,7 +14,7 @@ library(data.table)
 #              population to quarantee that class as the prediction
 #              (only used when response is categorical)
 # Output: predicted response vector
-dNN <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
+fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
   # * process training data to create "reference data" for NN alg
   res_type <- ifelse(is.numeric(y), 'numeric', 'class')
   res_data_type <- ifelse(is.numeric(y), 'numeric', 'character')
