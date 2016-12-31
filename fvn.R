@@ -15,7 +15,10 @@ library(data.table)
 #              (only used when response is categorical)
 # Output: predicted response vector
 fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
-  # * process training data to create "reference data" for NN alg
+  x <- data.frame(x)
+  q <- data.frame(d)
+  if (is.data.frame(y)) {y <- y[, 1]}
+  # * process training data to create "reference data"
   res_type <- ifelse(is.numeric(y), 'numeric', 'class')
   res_data_type <- ifelse(is.numeric(y), 'numeric', 'character')
   ref <- data.frame(x, fvn.response = y)
