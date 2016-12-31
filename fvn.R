@@ -18,7 +18,7 @@ fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
   # * process training data to create "reference data" for NN alg
   res_type <- ifelse(is.numeric(y), 'numeric', 'class')
   res_data_type <- ifelse(is.numeric(y), 'numeric', 'character')
-  ref <- data.frame(x, dnn.response = y)
+  ref <- data.frame(x, fvn.response = y)
   nvar <- ncol(x) # number of variables
   nref <- nrow(ref) # number of reference points
   # calculate the unit length of each variable
@@ -51,7 +51,7 @@ fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
       if (res_type == 'class') {
         sball <-
           dball %>%
-          dplyr::group_by(dnn.response) %>%
+          dplyr::group_by(fvn.response) %>%
           dplyr::summarise(nc = n(), frac = nc/n) %>%
           dplyr::filter(frac >= min.frac) %>%
           dplyr::arrange(desc(frac)) %>%
@@ -60,17 +60,17 @@ fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
           prediction[i] <- NA
           comment[i] <- "frac of best class too low"
         } else {
-          prediction[i] <- sball$dnn.response[1]
+          prediction[i] <- sball$fvn.response[1]
           comment[i] <- paste(
             "class frac",
             as.character(signif(sball$frac[1], 3))
           )
         }
       } else if (res_type == 'numeric') {
-        prediction[i] <- signif(mean(dball$dnn.response, na.rm = T), 3)
+        prediction[i] <- signif(mean(dball$fvn.response, na.rm = T), 3)
         comment[i] <- paste(
           "std is", 
-          as.character(signif(sd(dball$dnn.response, na.rm = T), 3))
+          as.character(signif(sd(dball$fvn.response, na.rm = T), 3))
         )
       }
     }
