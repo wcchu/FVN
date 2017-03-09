@@ -15,19 +15,19 @@ library(data.table)
 #              (only used when response is categorical)
 # Output: predicted response vector
 fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
-  x <- data.frame(x)
-  q <- data.frame(q)
+  x <- data.table(x)
+  q <- data.table(q)
   if (is.data.frame(y)) {y <- y[, 1]}
   # * process training data to create "reference data"
   res_type <- ifelse(is.numeric(y), 'numeric', 'class')
   res_data_type <- ifelse(is.numeric(y), 'numeric', 'character')
-  ref <- data.frame(x, fvn.response = y)
+  ref <- data.table(x, fvn.response = y)
   nvar <- ncol(x) # number of variables
   nref <- nrow(ref) # number of reference points
   # calculate the unit length of each variable
   u <- c()
   for (j in 1:nvar) {
-    u[j] <- sd(x[, j])
+    u[j] <- sd(x[[j]])
   }
   # run through queries and predict response for each query
   nque <- nrow(q)
@@ -37,7 +37,7 @@ fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
   for (i in 1:nque) {
     ss <- vector(mode = "numeric", length = nref)
     for (j in 1:nvar) {
-      ss <- ss + ((x[, j] - as.numeric(q[i, j])) / u[j])^2
+      ss <- ss + ((x[[j]] - as.numeric(q[[i, j]])) / u[j])^2
     }
     distance <- sqrt(ss)
     ref$dist <- distance
