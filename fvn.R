@@ -3,6 +3,7 @@
 # 2016-06-12
 library(dplyr)
 library(data.table)
+library(FNN)
 # Input:
 #   x = predictor variables of the reference dataset
 #   y = response of the reference dataset
@@ -13,8 +14,9 @@ library(data.table)
 #   min.frac = minimum proportion of the most popular class out of the total
 #              population to quarantee that class as the prediction
 #              (only used when response is categorical)
+#   k.fnn = number of neighbors to pre-subset using fnn
 # Output: predicted response vector
-fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
+fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0, k.fnn = 0) {
   x <- data.table(x)
   q <- data.table(q)
   if (is.data.frame(y)) {y <- y[, 1]}
