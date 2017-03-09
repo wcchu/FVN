@@ -16,7 +16,7 @@ library(data.table)
 # Output: predicted response vector
 fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
   x <- data.frame(x)
-  q <- data.frame(d)
+  q <- data.frame(q)
   if (is.data.frame(y)) {y <- y[, 1]}
   # * process training data to create "reference data"
   res_type <- ifelse(is.numeric(y), 'numeric', 'class')
