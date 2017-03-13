@@ -27,5 +27,5 @@ p <-
     q = dque[, -m],
     v = 0.2,
     min.pts = 1,
-    min.frac = 0.2
-  )
+    min.frac = 0.2,
+    k.fnn = 10)
