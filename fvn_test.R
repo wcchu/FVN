@@ -2,29 +2,21 @@ suppressMessages(library(dplyr))
 suppressMessages(library(data.table))
 suppressMessages(require(MASS))
 
-data <- Cars93
+data <- data.table(Cars93)
 
-data$samp <- sample(nrow(data), nrow(data))
-nref <- as.integer(nrow(data) * 0.66)
-ref <-
-  data %>%
-  dplyr::filter(samp <= nref) %>%
-  dplyr::select(-samp)
-que <-
-  data %>%
-  dplyr::filter(samp > nref) %>%
-  dplyr::select(-samp)
+samp <- sample(nrow(data), nrow(data)/3)
+ref <- data[!samp]
+que <- data[samp]
 
-dref <- ref %>% dplyr::select(Horsepower, Passengers, Price)
-dque <- que %>% dplyr::select(Horsepower, Passengers, Price)
-m <- ncol(dref)
+dref <- ref[, c("Horsepower", "Passengers", "Price")]
+dque <- que[, c("Horsepower", "Passengers", "Price")]
 
 suppressMessages(source("fvn.R"))
 p <-
   fvn(
-    x = dref[, -m],
-    y = dref[, m],
-    q = dque[, -m],
+    x = dref[, c("Horsepower", "Passengers")],
+    y = dref[["Price"]],
+    q = dque[, c("Horsepower", "Passengers")],
     v = 0.2,
     min.pts = 1,
     min.frac = 0.2,
