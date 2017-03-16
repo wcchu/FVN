@@ -52,14 +52,7 @@ fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0, k.fnn = 0) {
         index = as.vector(fnn_res$nn.index), 
         dist = as.vector(fnn_res$nn.dist)) %>%
       subset(dist <= r0)
-    
-    #ss <- vector(mode = "numeric", length = nref)
-    #for (j in 1:nvar) {
-    #  ss <- ss + ((x[[j]] - as.numeric(q[[i, j]])) / u[j])^2
-    #}
-    #distance <- sqrt(ss)
-    #ref$dist <- distance
-    # collect data points in ball
+    # collect data points in the neighborhood ball
     dball <- data.table(ref[fnn_sub$index], dist = fnn_sub$dist)
     n = nrow(dball)
     if (n < min.pts) {
