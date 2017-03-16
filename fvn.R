@@ -3,6 +3,7 @@
 # 2016-06-12
 library(dplyr)
 library(data.table)
+library(FNN)
 # Input:
 #   x = predictor variables of the reference dataset
 #   y = response of the reference dataset
@@ -13,8 +14,9 @@ library(data.table)
 #   min.frac = minimum proportion of the most popular class out of the total
 #              population to quarantee that class as the prediction
 #              (only used when response is categorical)
+#   k.fnn = number of neighbors to pre-subset using fnn
 # Output: predicted response vector
-fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
+fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0, k.fnn = 0) {
   x <- data.table(x)
   q <- data.table(q)
   if (is.data.frame(y)) {y <- y[, 1]}
@@ -24,10 +26,15 @@ fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
   ref <- data.table(x, fvn.response = y)
   nvar <- ncol(x) # number of variables
   nref <- nrow(ref) # number of reference points
-  # calculate the unit length of each variable
+  r0 <- v ** (1 / nvar)
+  # normalize variable space
   u <- c()
+  href <- ref
+  hq <- q
   for (j in 1:nvar) {
-    u[j] <- sd(x[[j]])
+    u[j] <- sd(x[[j]]) ## the unit length
+    href[[j]] <- ref[[j]]/u[j] ## normalize ref
+    hq[[j]] <- q[[j]]/u[j] ## normalize query
   }
   # run through queries and predict response for each query
   nque <- nrow(q)
@@ -35,16 +42,18 @@ fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0) {
   comment <- vector(mode = "character", length = nque)
   n_neighbors <- vector(mode = "integer", length = nque)
   for (i in 1:nque) {
-    ss <- vector(mode = "numeric", length = nref)
-    for (j in 1:nvar) {
-      ss <- ss + ((x[[j]] - as.numeric(q[[i, j]])) / u[j])^2
-    }
-    distance <- sqrt(ss)
-    ref$dist <- distance
-    # collect data points in ball
-    dball <-
-      ref %>%
-      dplyr::filter(dist <= v ** (1 / nvar))
+    fnn_res <-
+      get.knnx(
+        data = href[, c(1:nvar), with = FALSE],
+        query = hq[, c(1:nvar), with = FALSE][i, ],
+        k = k.fnn)
+    fnn_sub <-
+      data.table(
+        index = as.vector(fnn_res$nn.index), 
+        dist = as.vector(fnn_res$nn.dist)) %>%
+      subset(dist <= r0)
+    # collect data points in the neighborhood ball
+    dball <- data.table(ref[fnn_sub$index], dist = fnn_sub$dist)
     n = nrow(dball)
     if (n < min.pts) {
       prediction[i] <- NA
