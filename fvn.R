@@ -42,11 +42,12 @@ fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0, k.fnn = 0) {
   comment <- vector(mode = "character", length = nque)
   n_neighbors <- vector(mode = "integer", length = nque)
   for (i in 1:nque) {
+    k0 <- ifelse(k.fnn == 0, nref, k.fnn)
     fnn_res <-
       get.knnx(
         data = href[, c(1:nvar), with = FALSE],
         query = hq[, c(1:nvar), with = FALSE][i, ],
-        k = k.fnn)
+        k = k0)
     fnn_sub <-
       data.table(
         index = as.vector(fnn_res$nn.index), 
