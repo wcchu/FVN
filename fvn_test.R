@@ -2,6 +2,7 @@ suppressMessages(library(dplyr))
 suppressMessages(library(data.table))
 suppressMessages(require(MASS))
 
+set.seed(1)
 data <- data.table(Cars93)
 
 samp <- sample(nrow(data), nrow(data)/3)
