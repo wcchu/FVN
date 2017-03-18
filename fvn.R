@@ -48,13 +48,8 @@ fvn <- function(x, y, q, v, min.pts = 1, min.frac = 0, k.fnn = 0) {
         data = href[, c(1:nvar), with = FALSE],
         query = hq[, c(1:nvar), with = FALSE][i, ],
         k = k0)
-    fnn_sub <-
-      data.table(
-        index = as.vector(fnn_res$nn.index), 
-        dist = as.vector(fnn_res$nn.dist)) %>%
-      subset(dist <= r0)
     # collect data points in the neighborhood ball
-    dball <- data.table(ref[fnn_sub$index], dist = fnn_sub$dist)
+    dball <- ref[fnn_res$nn.index[which(fnn_res$nn.dist <= r0)], "fvn.response"]
     n = nrow(dball)
     if (n < min.pts) {
       prediction[i] <- NA
